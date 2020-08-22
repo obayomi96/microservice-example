@@ -39,12 +39,29 @@ app.post('/comments', (req, res) => {
   })
 });
 
-app.use('*', (req, res) =>
-  res.status(404).json({
-    status: res.statusCode,
-    error: 'Resource not found on Comments API. Double check the url and try again',
-  })
-);
+app.post('/comments/**', (req, res) => {
+  const commentId = parseInt(req.params[0]);
+  const selectedComment = comments.find(c => c.id === commentId);
+  if (selectedComment) {
+      for (let attribute in selectedComment) {
+          if (req.body[attribute]) {
+            selectedComment[attribute] = req.body[attribute];
+              console.log(`Set ${attribute} to ${req.body[attribute]} in comments: ${commentId}`);
+          }
+      }
+      res.status(202).header({Location: `http://localhost:${port}/comments/${selectedComment.id}`}).send(selectedComment);
+  } else {
+      console.log(`Comment not found.`);
+      res.status(404).send();
+  }
+});
+
+// app.use('*', (req, res) =>
+//   res.status(404).json({
+//     status: res.statusCode,
+//     error: 'Resource not found on Comments API. Double check the url and try again',
+//   })
+// );
 
 app.listen(port, () => {
   console.log(`Comment mircroservice running on port ${port}`);

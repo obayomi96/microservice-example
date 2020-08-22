@@ -2,7 +2,7 @@ const replies = [
   {
     id: 1,
     content: 'my first reply',
-    commentId: 5
+    commentId: 4
   },
   {
     id: 2,

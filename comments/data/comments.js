@@ -6,10 +6,18 @@ const comments = [
   {
     id: 2,
     content: 'my second comment',
+    replies: [
+      "comment 2 reply one",
+      "comment 2 reply two",
+    ]
   },
   {
     id: 3,
     content: 'my third comment',
+    replies: [
+      "comment 3 reply one",
+      "comment 3 reply two",
+    ]
   },
   {
     id: 4,
