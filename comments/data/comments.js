@@ -2,6 +2,7 @@ const comments = [
   {
     id: 1,
     content: 'my first comment',
+    replies: []
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const comments = [
   {
     id: 4,
     content: 'my forth comment',
+    replies: []
   }
 ]
 

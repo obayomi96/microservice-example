@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const comments = require('./data/comments');
+const replies = require('../replies/data/replies');
 
 const port = process.argv.slice(2)[0];
 
@@ -43,13 +44,27 @@ app.post('/comments/**', (req, res) => {
   const commentId = parseInt(req.params[0]);
   const selectedComment = comments.find(c => c.id === commentId);
   if (selectedComment) {
-      for (let attribute in selectedComment) {
-          if (req.body[attribute]) {
-            selectedComment[attribute] = req.body[attribute];
-              console.log(`Set ${attribute} to ${req.body[attribute]} in comments: ${commentId}`);
-          }
-      }
+    const replied = selectedComment.replies.push(req.body.content);
+    if (replied) {
+      console.log(`You replied tp comment with id ${commentId}`);
       res.status(202).header({Location: `http://localhost:${port}/comments/${selectedComment.id}`}).send(selectedComment);
+    }
+  } else {
+      console.log(`Comment not found.`);
+      res.status(404).send();
+  }
+});
+
+app.get('/comments/**', (req, res) => {
+  const commentId = parseInt(req.params[0]);
+  const replyContent = parseInt(req.params[1]);
+  const selectedComment = comments.find(c => c.id === commentId);
+  if (selectedComment) {
+    const replied = selectedComment.replies.push(replyContent);
+    if (replied) {
+      console.log(`You replied tp comment with id ${commentId}`);
+      res.status(202).header({Location: `http://localhost:${port}/comments/${selectedComment.id}`}).send(selectedComment);
+    } return console.log('errooooorrr !!!')
   } else {
       console.log(`Comment not found.`);
       res.status(404).send();
